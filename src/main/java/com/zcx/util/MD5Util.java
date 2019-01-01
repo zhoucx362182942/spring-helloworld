@@ -14,14 +14,14 @@ import java.util.TreeMap;
  * MD5工具类，用于签名与验签
  */
 public class MD5Util {
+    private static final String privateKey = "8EAF2806D7AC4FB2BBE0988E3E31FE35";
 
-    // verify
     /**
      * MD5签名
      * @param params 参数
      * @return
      */
-    public static String sign(Map<String, String> params) throws NoSuchAlgorithmException {
+    public static String sign(Map<String, String> params, String key) throws NoSuchAlgorithmException {
         if (CollectionUtils.isEmpty(params)) {
             return null;
         }
@@ -32,10 +32,10 @@ public class MD5Util {
         }
         String message = paramBuffer.toString();
         message = message.substring(0, message.length() - 1);
+        message += key;
         return encrypt(message);
     }
 
-//    public static String
 
     /**
      * MD5加密
@@ -63,11 +63,11 @@ public class MD5Util {
 
     public static void main(String[] args) {
         Map<String, String> params = new HashMap<String, String>();
-        params.put("name", "zcx");
-        params.put("age", "29");
-        params.put("sex", "male");
+        params.put("name", "sujiao");
+        params.put("age", "21");
+        params.put("sex", "girl");
         try {
-            System.out.println(sign(params));
+            System.out.println(sign(params, "8EAF2806D7AC4FB2BBE0988E3E31FE35"));
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
