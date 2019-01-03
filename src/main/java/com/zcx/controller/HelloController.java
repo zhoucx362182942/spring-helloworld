@@ -2,15 +2,17 @@ package com.zcx.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.zcx.controller.response.RestResponse;
+import com.zcx.domain.User;
 import com.zcx.request.UserRequest;
 import com.zcx.util.MD5Util;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,5 +70,18 @@ public class HelloController {
             e.printStackTrace();
         }
         return "";
+    }
+
+    @RequestMapping(value = "/fastJsonTest", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public String fastJsonTest(@Valid @RequestBody User user, BindingResult result) {
+        if (result.hasErrors()) {
+            for (FieldError fieldError : result.getFieldErrors()) {
+                System.out.println(fieldError.getDefaultMessage());
+            }
+        }
+
+        System.out.println(user.toString());
+        return user.toString();
     }
 }
